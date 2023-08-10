@@ -73,6 +73,9 @@ const MemberList: FC<MemberListProps> = () => {
                       }   
                     </div>
                     <div><strong>JoinedAt: </strong>{moment(member.joinedAt).tz("America/New_York").format("ddd, M/D/YY, h:mm:ssA")} EST</div>
+                    {
+                      member.active ? <div><strong>Current</strong> user in Discord</div> : <div><strong>No longer</strong> in Discord</div>
+                    }
                   </div>
                 </div>
                 <div className="column">
