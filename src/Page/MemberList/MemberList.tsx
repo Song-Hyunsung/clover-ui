@@ -1,31 +1,20 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import './MemberList.css';
-import MemberService from '../../Service/MemberService';
+import useMemberService from '../../Hooks/useMemberService';
 import moment from 'moment-timezone';
 
 interface MemberListProps {}
 
 const MemberList: FC<MemberListProps> = () => {
-  const [memberList, setMemberList] = useState([]);
-  const { getMembers } = MemberService();
-
-  useEffect(() => {
-    getMembers().then((res) => {
-      if(res.data){
-        setMemberList(res.data)
-      } else {
-        console.error("Error during getMembers call")
-      }
-    })
-  }, [])
+  const { memberList } = useMemberService();
 
   const renderRanks = (member: any) => {
     let renderArray: JSX.Element[] = [];
     if(member.ranks){
-      Object.keys(member.ranks).forEach((rankType: string) => {
+      Object.keys(member.ranks).forEach((rankType: string, index: number) => {
         const tierRankInfo = member.ranks[rankType];
         renderArray.push(
-          <div className="container">
+          <div className="container" key={index}>
             <div><strong>{rankType}</strong></div>
             <div>{tierRankInfo.tier} {tierRankInfo.rank}, {tierRankInfo.leaguePoints}LP</div>
             <div>Win: {tierRankInfo.wins}, Losses: {tierRankInfo.losses}, Rate: {(tierRankInfo.wins/(tierRankInfo.wins + tierRankInfo.losses)*100.0).toPrecision(4)}%</div>
@@ -34,7 +23,6 @@ const MemberList: FC<MemberListProps> = () => {
         )
       })
     }
-
     return <div>{renderArray}</div>
   }
    
@@ -50,9 +38,9 @@ const MemberList: FC<MemberListProps> = () => {
         <div className={"column column-heading"}><strong>Note</strong></div>
       </div>
         {
-          memberList.map((member: any) => {
+          memberList.map((member: any, index: number) => {
             return(
-              <div className="columns" key={member._id}>
+              <div className="columns" key={index}>
                 <div className="column">
                   <div className="container">
                     <div><strong>Nickname: </strong>{member.displayName}</div>
@@ -67,7 +55,7 @@ const MemberList: FC<MemberListProps> = () => {
                             comma = "";
                           }
                           return(
-                            <span>{role}{comma} </span>
+                            <span key={index}>{role}{comma} </span>
                           )
                         })
                       }   
