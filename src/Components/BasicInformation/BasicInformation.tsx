@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import './BasicInformation.css';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 interface IBasicInformation {
   displayName: string,
@@ -21,7 +21,7 @@ const BasicInformation: FC<IBasicInformationProps> = (props: IBasicInformationPr
   const { displayName, tag, isMember, inGameName, roles, joinedAt, active } = basicInformation;
 
   return(
-    <div className="container">
+    <div className="tile is-child box info-tile">
       <div><strong>Nickname: </strong>{displayName}</div>
       <div><strong>Tag: </strong>{tag}</div>
       { isMember ? <div><strong>IGN: </strong>{inGameName}</div> : <div></div> }

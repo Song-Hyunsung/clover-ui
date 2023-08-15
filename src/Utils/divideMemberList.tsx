@@ -1,5 +1,7 @@
 const divideMemberList = (memberListArray: any) => {
   let basicInformationArray: any = [];
+  let rankTierInformationArray: any = [];
+
   memberListArray.forEach((memberList:any) => {
     let basicInformation : any = {
       displayName: memberList.displayName,
@@ -10,11 +12,17 @@ const divideMemberList = (memberListArray: any) => {
       joinedAt: memberList.joinedAt,
       active: memberList.active
     }
+
+    let rankTierInformation : any = {
+      ranks: memberList.ranks,
+    }
+
     basicInformationArray.push(basicInformation);
+    rankTierInformationArray.push(rankTierInformation);
   })
 
 
-  return basicInformationArray;
+  return { basicInformationArray, rankTierInformationArray }
 }
 
 export default divideMemberList;
