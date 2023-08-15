@@ -1,9 +1,13 @@
-const divideMemberList = (memberListArray: any) => {
-  let basicInformationArray: any = [];
-  let rankTierInformationArray: any = [];
+import BasicInfo from "../Models/BasicInfo";
+import MemberList from "../Models/MemberList";
+import RankTierInfo from "../Models/RankTierInfo";
 
-  memberListArray.forEach((memberList:any) => {
-    let basicInformation : any = {
+const divideMemberList = (memberListArray: MemberList[]) => {
+  let basicInformationArray: BasicInfo[] = [];
+  let rankTierInformationArray: RankTierInfo[] = [];
+
+  memberListArray.forEach((memberList: MemberList) => {
+    let basicInformation : BasicInfo = {
       displayName: memberList.displayName,
       tag: memberList.tag,
       inGameName: memberList.inGameName,
@@ -13,7 +17,7 @@ const divideMemberList = (memberListArray: any) => {
       active: memberList.active
     }
 
-    let rankTierInformation : any = {
+    let rankTierInformation : RankTierInfo = {
       ranks: memberList.ranks,
     }
 

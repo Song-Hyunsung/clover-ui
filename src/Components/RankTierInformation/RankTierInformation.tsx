@@ -1,20 +1,22 @@
 import React, { FC } from 'react';
 import moment from 'moment-timezone';
 import './RankTierInformation.css';
+import Rank from '../../Models/Rank';
+import RankTierInfo from '../../Models/RankTierInfo';
 
-interface IRankTierInformationProps {
-  rankTierInformation: any
+interface IRankTierInformation {
+  rankTierInformation: RankTierInfo
 }
 
-const RankTierInformation: FC<IRankTierInformationProps> = (props: IRankTierInformationProps) => {
+const RankTierInformation: FC<IRankTierInformation> = (props: IRankTierInformation) => {
   const { rankTierInformation } = props;
 
-  const renderRanks = (member: any) => {
+  const renderRanks = (member: RankTierInfo) => {
     let renderArray: JSX.Element[] = [];
     
     if(member.ranks){
       Object.keys(member.ranks).forEach((rankType: string, index: number) => {
-        const tierRankInfo = member.ranks[rankType];
+        const tierRankInfo: Rank = member.ranks[rankType];
         renderArray.push(
           <div key={index}>
             <div><strong>{rankType}</strong>: <span>{tierRankInfo.tier} {tierRankInfo.rank}, {tierRankInfo.leaguePoints}LP</span></div>

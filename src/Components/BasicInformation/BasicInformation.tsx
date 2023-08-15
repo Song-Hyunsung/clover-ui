@@ -1,19 +1,10 @@
 import { FC } from 'react';
 import './BasicInformation.css';
 import moment from 'moment-timezone';
-
-interface IBasicInformation {
-  displayName: string,
-  tag: string,
-  inGameName: string,
-  isMember: boolean,
-  roles: string[],
-  joinedAt: Date,
-  active: boolean
-}
+import BasicInfo from '../../Models/BasicInfo';
 
 interface IBasicInformationProps {
-  basicInformation: IBasicInformation
+  basicInformation: BasicInfo
 }
 
 const BasicInformation: FC<IBasicInformationProps> = (props: IBasicInformationProps) => {
@@ -28,7 +19,7 @@ const BasicInformation: FC<IBasicInformationProps> = (props: IBasicInformationPr
       <div>
         <strong>Roles: </strong>
         {
-          roles.map((role: any, index: number) => {
+          roles.map((role: string, index: number) => {
             let comma = ",";
             if(index === roles.length-1){
               comma = "";
