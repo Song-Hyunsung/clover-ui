@@ -6,10 +6,7 @@ const useMemberService = () => {
   const apiRequest = useApiRequest('GET');
   const url = process.env.REACT_APP_CLOVER_API + "/member";
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-
+  const fetchMembers = (signal: any) => {
     apiRequest(url, signal).then((res) => {
       if(res.data){
         setMemberList(res.data)
@@ -17,10 +14,18 @@ const useMemberService = () => {
         console.error("Error during getMembers call")
       }
     })
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    fetchMembers(signal);
+
     return () => {
       controller.abort();
     };
-  }, [apiRequest, url])
+  }, []);
 
   return { memberList };
 }

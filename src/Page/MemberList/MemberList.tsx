@@ -2,11 +2,14 @@ import { FC } from 'react';
 import './MemberList.css';
 import useMemberService from '../../Hooks/useMemberService';
 import moment from 'moment-timezone';
+import divideMemberList from '../../Utils/divideMemberList';
+import BasicInformation from '../../Components/BasicInformation/BasicInformation';
 
 interface MemberListProps {}
 
 const MemberList: FC<MemberListProps> = () => {
   const { memberList } = useMemberService();
+  const basicInformationArray = divideMemberList(memberList);
 
   const renderRanks = (member: any) => {
     let renderArray: JSX.Element[] = [];
@@ -37,49 +40,25 @@ const MemberList: FC<MemberListProps> = () => {
         <div className={"column column-heading"}><strong>Rank & Tier</strong></div>
         <div className={"column column-heading"}><strong>Note</strong></div>
       </div>
-        {
-          memberList.map((member: any, index: number) => {
-            return(
-              <div className="columns" key={index}>
-                <div className="column">
-                  <div className="container">
-                    <div><strong>Nickname: </strong>{member.displayName}</div>
-                    <div><strong>Tag: </strong>{member.tag}</div>
-                    { member.isMember ? <div><strong>IGN: </strong>{member.inGameName}</div> : <div></div> }
-                    <div>
-                      <strong>Roles: </strong>
-                      {
-                        member.roles.map((role: any, index: number) => {
-                          let comma = ",";
-                          if(index === member.roles.length-1){
-                            comma = "";
-                          }
-                          return(
-                            <span key={index}>{role}{comma} </span>
-                          )
-                        })
-                      }   
-                    </div>
-                    <div><strong>JoinedAt: </strong>{moment(member.joinedAt).tz("America/New_York").format("ddd, M/D/YY, h:mm:ssA")} EST</div>
-                    {
-                      member.active ? <div><strong>Current</strong> user in Discord</div> : <div><strong>No longer</strong> in Discord</div>
-                    }
-                  </div>
-                </div>
-                <div className="column">
-                  <div className="container">
-                    { renderRanks(member) }
-                  </div>
-                </div>
-                <div className="column">
-                  <div className="container">
-                    Note or any further information will be here
-                  </div>
-                </div>
-              </div>
-            )
-          })
-        }
+      <div className="columns">
+        <div className="column">
+          {
+            basicInformationArray.map((basicInformation: any) => (
+              <BasicInformation basicInformation={basicInformation}/>
+            ))
+          }
+        </div>
+        <div className="column">
+          <div className="container">
+            {/* { renderRanks(member) } */}
+          </div>
+        </div>
+        <div className="column">
+          <div className="container">
+            Note or any further information will be here
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   )

@@ -8,7 +8,7 @@ const useApiRequest = (type: string) => {
 
   const http = axios.create();
 
-  const makeGetRequest = async (url: string, signal: any) => {
+  const makeGetRequest = async (url: string, signal?: any) => {
     const response: APIResponse = {
       data: null,
       error: null
