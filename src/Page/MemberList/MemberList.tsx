@@ -14,10 +14,10 @@ const MemberList: FC<MemberListProps> = () => {
         Clover Member List
       </div>
       <div className="container">
-        <div className="columns sub-heading">
-          <div className={"column column-heading"}><strong>Basic Information</strong></div>
-          <div className={"column column-heading"}><strong>Rank & Tier</strong></div>
-          <div className={"column column-heading"}><strong>Note</strong></div>
+        <div className="columns">
+          <div className={"column column-heading sub-heading"}><strong>Basic Information</strong></div>
+          <div className={"column column-heading sub-heading"}><strong>Rank & Tier</strong></div>
+          <div className={"column column-heading sub-heading"}><strong>Note</strong></div>
         </div>
       </div>
       <div className="container">

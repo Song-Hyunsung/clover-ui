@@ -31,6 +31,9 @@ const FullInformation: FC<IFullInformationProps> = (props: IFullInformationProps
               ))
             }
           </div>
+          <div className="tile is-parent is-vertical is-4">
+            NOTE WILL GO HERE
+          </div>
         </div>
       </div>
     </div>
