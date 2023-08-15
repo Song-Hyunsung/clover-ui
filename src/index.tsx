@@ -16,7 +16,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <RouterProvider router={router}></RouterProvider>
+  <React.StrictMode>
+    <RouterProvider router={router}></RouterProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
