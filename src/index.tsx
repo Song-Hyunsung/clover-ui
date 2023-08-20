@@ -5,10 +5,13 @@ import Landing from './Page/Landing/Landing';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MemberList from './Page/MemberList/MemberList';
+import Login from './Page/Login/Login';
+import Protected from './Routes/Protected/Protected';
 
 const router = createBrowserRouter([
   { path: "/", element: <Landing />},
-  { path: "/member-list", element: <MemberList />}
+  { path: "/member-list", element: <Protected><MemberList /></Protected>},
+  { path: "/login", element: <Login />}
 ]);
 
 const root = ReactDOM.createRoot(

@@ -6,7 +6,22 @@ const useApiRequest = (type: string) => {
     error: any;
   }
 
-  const http = axios.create();
+  const axiosInstance = axios.create();
+
+  axiosInstance.interceptors.response.use((res: any) => {
+    return res;
+  }, (err) => {
+    if(err && err.response && err.response.status && err.response.status === 401){
+      window.location.href = "/login";
+    }
+    // in case of signal abort, resolve with empty object to prevent runtime error
+    // caused by Promise.reject due to signal.abort() call
+    // this empty resolve will get handled in useEffect clean up
+    if(err.code === "ERR_CANCELED"){
+      return Promise.resolve({});
+    }
+    return Promise.reject(err);
+  })
 
   const makeGetRequest = async (url: string, signal?: AbortSignal) => {
     const response: APIResponse = {
@@ -15,11 +30,15 @@ const useApiRequest = (type: string) => {
     }
 
     try {
-      const { data } = await http.get(url, {signal: signal});
+      const { data } = await axiosInstance.get(url, {signal: signal});
       response.data = data
     } catch(err: any){
-      console.error("Error during GET: ", url);
-      console.error(err)
+      if(err && err.response && err.response.status && err.response.status === 401){
+        console.log("User not logged in, redirecting to login page");
+      } else {
+        console.error("Error during GET: ", url);
+      }
+      throw err;
     }
 
     return response;

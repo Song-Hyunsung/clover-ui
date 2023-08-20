@@ -11,8 +11,11 @@ const useMemberService = () => {
     apiRequest(url, signal).then((res) => {
       if(res.data){
         setMemberList(res.data)
-      } else {
-        console.error("Error during getMembers call")
+      }
+    }).catch((err) => {
+      if(err && err.response && err.response.status && err.response.status !== 401){
+        console.error("Error during getMember call");
+        console.error(err);
       }
     })
   }
