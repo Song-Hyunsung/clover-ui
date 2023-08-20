@@ -5,27 +5,28 @@ const useAuthService = (endpoint: string) => {
   const apiRequest = useApiRequest('GET');
   const url = process.env.REACT_APP_CLOVER_API + "/auth/check";
 
-  const checkLogin = () => {
+  useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    const callCheckLogin = () => {
-      apiRequest(url, signal).then((res) => {
-        console.log(res);
-      }).catch((err) => {
-        controller.abort();
-      })
+    switch(endpoint){
+      case "checkLogin":
+        checkLogin(signal);
     }
 
-    callCheckLogin();
-  }
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
-  switch(endpoint){
-    case "checkLogin":
-      return checkLogin();
-    default:
-      return null;
+  const checkLogin = (signal: AbortSignal) => {
+    apiRequest(url, signal).then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.error(err);
+    })
   }
+  
 }
 
 export default useAuthService;
