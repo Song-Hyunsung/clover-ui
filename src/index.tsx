@@ -7,11 +7,15 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MemberList from './Page/MemberList/MemberList';
 import Login from './Page/Login/Login';
 import Protected from './Routes/Protected/Protected';
+import LoginRedirect from './Page/Login/LoginRedirect';
 
 const router = createBrowserRouter([
   { path: "/", element: <Landing />},
   { path: "/member-list", element: <Protected><MemberList /></Protected>},
-  { path: "/login", element: <Login />}
+  { path: "/login", children:[
+    { index: true, element: <Login /> },
+    { path: "redirect", element: <LoginRedirect /> }
+  ]}
 ]);
 
 const root = ReactDOM.createRoot(
@@ -19,11 +23,12 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
-  </React.StrictMode>
-);
 
+    <RouterProvider router={router}></RouterProvider>
+
+);
+//   <React.StrictMode>
+//   </React.StrictMode>
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

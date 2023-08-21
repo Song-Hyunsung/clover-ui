@@ -1,14 +1,16 @@
 import axios from 'axios';
 
+interface APIResponse {
+  data: any;
+  status: number;
+  error: any;
+}
+
 const useApiRequest = (type: string) => {
-  interface APIResponse {
-    data: any;
-    error: any;
-  }
+  const axiosProtectedInstance = axios.create();
+  const axiosUnprotectedInstance = axios.create();
 
-  const axiosInstance = axios.create();
-
-  axiosInstance.interceptors.response.use((res: any) => {
+  axiosProtectedInstance.interceptors.response.use((res: any) => {
     return res;
   }, (err) => {
     if(err && err.response && err.response.status && err.response.status === 401){
@@ -26,12 +28,14 @@ const useApiRequest = (type: string) => {
   const makeGetRequest = async (url: string, signal?: AbortSignal) => {
     const response: APIResponse = {
       data: null,
+      status: 500,
       error: null
     }
 
     try {
-      const { data } = await axiosInstance.get(url, {signal: signal});
-      response.data = data
+      const { data, status } = await axiosProtectedInstance.get(url, {signal: signal});
+      response.data = data;
+      response.status = status;
     } catch(err: any){
       if(err && err.response && err.response.status && err.response.status === 401){
         console.log("User not logged in, redirecting to login page");
@@ -44,9 +48,29 @@ const useApiRequest = (type: string) => {
     return response;
   }
 
+  const makeUnprotectedGetRequest = async (url: string, signal?: AbortSignal) => {
+    const response: APIResponse = {
+      data: null,
+      status: 500,
+      error: null,
+    }
+
+    try {
+      const { data, status } = await axiosUnprotectedInstance.get(url, {signal: signal});
+      response.data = data;
+      response.status = status;
+    } catch(err: any){
+      throw err;
+    }
+
+    return response;
+  }
+
   switch(type){
     case 'GET':
       return makeGetRequest;
+    case 'UNPROTECTED_GET':
+      return makeUnprotectedGetRequest;
     default:
       return makeGetRequest
   }
