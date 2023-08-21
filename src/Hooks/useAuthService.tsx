@@ -3,7 +3,7 @@ import useApiRequest from "./useApiRequest";
 
 const useAuthService = (endpoint: string) => {
   const apiRequest = useApiRequest('GET');
-  const url = process.env.REACT_APP_CLOVER_API + "/auth/check";
+  const baseUrl = process.env.REACT_APP_CLOVER_API;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -14,19 +14,19 @@ const useAuthService = (endpoint: string) => {
         checkLogin(signal);
     }
 
-    return () => {
+    return (() => {
       controller.abort();
-    };
+    })
   }, []);
 
   const checkLogin = (signal: AbortSignal) => {
-    apiRequest(url, signal).then((res) => {
+    apiRequest(baseUrl + "/auth/check", signal).then((res) => {
       console.log(res);
     }).catch((err) => {
       console.error(err);
     })
   }
-  
+
 }
 
 export default useAuthService;
