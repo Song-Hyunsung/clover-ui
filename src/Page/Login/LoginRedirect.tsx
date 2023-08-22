@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import useAuthService from '../../Hooks/useAuthService';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,35 +8,43 @@ const LoginRedirect: FC<LoginRedirectProps> = () => {
   const { status } = useAuthService("authenticate");
   const navigate = useNavigate();
 
-  const renderStatusDiv = (status: number | undefined) => {
+  useEffect(() => {
+    if(status){
+      switch(status){
+        case 200:
+          navigate("/member-list");
+          break;
+        case 403:
+          navigate("/forbidden");
+          break;
+        default:
+          break;
+      }
+    }
+  },[status])
+
+  const renderErrorMessage = () => {
+    if(!status){
+      return (
+        <div></div>
+      )
+    }
     switch(status){
-      case 403:
-        return (
-          <div>You are not an admin and cannot view the site, sorry !</div>
-        )
       case 200:
-        navigate("/member-list");
         return (
-          <div>Authentication finished, redirecting...</div>
+          <div></div>
         )
       default:
-        if(status){
-          return (
-            <div>Error: {status}, please reach out to me</div>
-          )
-        } else {
-          return (
-            <div></div>
-          )
-        }
-
+        return (
+          <div>Error status: {status}, please reach out to me</div>
+        )
     }
   }
 
   return (
     <div>
       {
-        renderStatusDiv(status)
+        renderErrorMessage()
       }
     </div>
   )

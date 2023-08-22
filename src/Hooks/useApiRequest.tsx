@@ -4,6 +4,7 @@ interface APIResponse {
   data: any;
   status: number;
   error: any;
+  headers: any;
 }
 
 const useApiRequest = (type: string) => {
@@ -16,8 +17,7 @@ const useApiRequest = (type: string) => {
     if(err && err.response && err.response.status && err.response.status === 401){
       window.location.href = "/login";
     } else if(err.response.status === 403){
-      // if needed, handle 403 case differently
-      window.location.href = "/login";
+      window.location.href = "/forbidden";
     }
     // in case of signal abort, resolve with empty object to prevent runtime error
     // caused by Promise.reject due to signal.abort() call
@@ -28,17 +28,26 @@ const useApiRequest = (type: string) => {
     return Promise.reject(err);
   })
 
-  const makeGetRequest = async (url: string, signal?: AbortSignal) => {
+  const makeProtectedGetRequest = async (url: string, signal?: AbortSignal) => {
     const response: APIResponse = {
       data: null,
       status: 500,
-      error: null
+      error: null,
+      headers: null
     }
 
     try {
-      const { data, status } = await axiosProtectedInstance.get(url, {signal: signal});
+      let authHeader = {};
+      if(localStorage.getItem("AUTH_JWT")){
+        authHeader = {
+          "Authorization": "Bearer " + localStorage.getItem("AUTH_JWT")
+        }
+      }
+
+      const { data, status, headers } = await axiosProtectedInstance.get(url, { signal: signal, headers: authHeader });
       response.data = data;
       response.status = status;
+      response.headers = headers;
     } catch(err: any){
       if(err && err.response && err.response.status && err.response.status === 401){
         console.log("User not logged in, redirecting to login page");
@@ -56,12 +65,14 @@ const useApiRequest = (type: string) => {
       data: null,
       status: 500,
       error: null,
+      headers: null
     }
 
     try {
-      const { data, status } = await axiosUnprotectedInstance.get(url, {signal: signal});
+      const { data, status, headers } = await axiosUnprotectedInstance.get(url, {signal: signal});
       response.data = data;
       response.status = status;
+      response.headers = headers;
     } catch(err: any){
       throw err;
     }
@@ -71,11 +82,11 @@ const useApiRequest = (type: string) => {
 
   switch(type){
     case 'GET':
-      return makeGetRequest;
+      return makeProtectedGetRequest;
     case 'UNPROTECTED_GET':
       return makeUnprotectedGetRequest;
     default:
-      return makeGetRequest
+      return makeProtectedGetRequest
   }
 }
 
