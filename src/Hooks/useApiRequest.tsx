@@ -7,13 +7,16 @@ interface APIResponse {
 }
 
 const useApiRequest = (type: string) => {
-  const axiosProtectedInstance = axios.create();
-  const axiosUnprotectedInstance = axios.create();
+  const axiosProtectedInstance = axios.create({ withCredentials: true });
+  const axiosUnprotectedInstance = axios.create({ withCredentials: true });
 
   axiosProtectedInstance.interceptors.response.use((res: any) => {
     return res;
   }, (err) => {
     if(err && err.response && err.response.status && err.response.status === 401){
+      window.location.href = "/login";
+    } else if(err.response.status === 403){
+      // if needed, handle 403 case differently
       window.location.href = "/login";
     }
     // in case of signal abort, resolve with empty object to prevent runtime error
