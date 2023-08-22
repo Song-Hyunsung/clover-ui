@@ -22,6 +22,11 @@ const useAuthService = (endpoint: string) => {
     if(authCode){
       unprotectedApiRequest(baseUrl + "/auth/authenticate?code=" + authCode, signal).then((res) => {
         console.log(res.status);
+        if(res.status === 200){
+          if(res.headers && res.headers.auth_jwt){
+            localStorage.setItem("AUTH_JWT", res.headers.auth_jwt);
+          }
+        }
         setStatus(res.status);
       }).catch((err) => {
         if(err && err.response && err.response.status){
