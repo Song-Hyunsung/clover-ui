@@ -6,6 +6,8 @@ import './FullInformation.css';
 import MemberList from '../../Models/MemberList';
 import BasicInfo from '../../Models/BasicInfo';
 import RankTierInfo from '../../Models/RankTierInfo';
+import NoteInformation from '../NoteInformation/NoteInformation';
+import NoteInfo from '../../Models/NoteInfo';
 
 
 interface IFullInformationProps {
@@ -35,7 +37,11 @@ const FullInformation: FC<IFullInformationProps> = (props: IFullInformationProps
             }
           </div>
           <div className="tile is-parent is-vertical is-4">
-            NOTE WILL GO HERE
+            {
+              noteInformationArray.map((noteInformation: NoteInfo, index: number) => (
+                <NoteInformation noteInformation={noteInformation} key={index}/>
+              ))
+            }
           </div>
         </div>
       </div>
