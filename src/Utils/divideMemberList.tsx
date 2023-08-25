@@ -1,10 +1,12 @@
 import BasicInfo from "../Models/BasicInfo";
 import MemberList from "../Models/MemberList";
 import RankTierInfo from "../Models/RankTierInfo";
+import NoteInfo from "../Models/NoteInfo";
 
 const divideMemberList = (memberListArray: MemberList[]) => {
   let basicInformationArray: BasicInfo[] = [];
   let rankTierInformationArray: RankTierInfo[] = [];
+  let noteInformationArray: NoteInfo[] = [];
 
   memberListArray.forEach((memberList: MemberList) => {
     let basicInformation : BasicInfo = {
@@ -21,12 +23,19 @@ const divideMemberList = (memberListArray: MemberList[]) => {
       ranks: memberList.ranks,
     }
 
+    let noteInformation : NoteInfo = {
+      id: memberList.id,
+      displayName: memberList.displayName,
+      note: memberList.note
+    }
+
     basicInformationArray.push(basicInformation);
     rankTierInformationArray.push(rankTierInformation);
+    noteInformationArray.push(noteInformation);
   })
 
 
-  return { basicInformationArray, rankTierInformationArray }
+  return { basicInformationArray, rankTierInformationArray, noteInformationArray }
 }
 
 export default divideMemberList;

@@ -14,7 +14,7 @@ interface IFullInformationProps {
 
 const FullInformation: FC<IFullInformationProps> = (props: IFullInformationProps) => {
   const { memberList } = props;
-  const { basicInformationArray, rankTierInformationArray } = divideMemberList(memberList);
+  const { basicInformationArray, rankTierInformationArray, noteInformationArray } = divideMemberList(memberList);
 
   return(
     <div className="tile is-ancestor">

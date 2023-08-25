@@ -1,6 +1,8 @@
+import Note from "./Note";
 import Rank from "./Rank";
 
 interface MemberList {
+  id: string,
   displayName: string,
   tag: string,
   inGameName: string,
@@ -10,7 +12,8 @@ interface MemberList {
   roles: string[],
   ranks: {
     [key: string]: Rank
-  }
+  },
+  note: Note
 }
 
 export default MemberList;
