@@ -2,7 +2,7 @@ import Note from "./Note";
 import Rank from "./Rank";
 
 interface MemberList {
-  id: string,
+  _id: string,
   displayName: string,
   tag: string,
   inGameName: string,

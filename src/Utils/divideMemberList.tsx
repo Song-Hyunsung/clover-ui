@@ -24,7 +24,7 @@ const divideMemberList = (memberListArray: MemberList[]) => {
     }
 
     let noteInformation : NoteInfo = {
-      id: memberList.id,
+      id: memberList._id,
       displayName: memberList.displayName,
       note: memberList.note
     }
