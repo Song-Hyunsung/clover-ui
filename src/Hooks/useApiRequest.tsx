@@ -60,6 +60,38 @@ const useApiRequest = (type: string) => {
     return response;
   }
 
+  const makeProtectedPostRequest = async (url: string, body: any, signal?: AbortSignal) => {
+    const response: APIResponse = {
+      data: null,
+      status: 500,
+      error: null,
+      headers: null
+    }
+
+    try {
+      let authHeader = {};
+      if(localStorage.getItem("AUTH_JWT")){
+        authHeader = {
+          "Authorization": "Bearer " + localStorage.getItem("AUTH_JWT")
+        }
+      }
+
+      const { data, status, headers } = await axiosProtectedInstance.post(url, body, { signal: signal, headers: authHeader });
+      response.data = data;
+      response.status = status;
+      response.headers = headers;
+    } catch(err: any){
+      if(err && err.response && err.response.status && err.response.status === 401){
+        console.log("User not logged in, redirecting to login page");
+      } else {
+        console.error("Error during POST: ", url);
+      }
+      throw err;
+    }
+
+    return response;
+  }
+
   const makeUnprotectedGetRequest = async (url: string, signal?: AbortSignal) => {
     const response: APIResponse = {
       data: null,
@@ -83,6 +115,8 @@ const useApiRequest = (type: string) => {
   switch(type){
     case 'GET':
       return makeProtectedGetRequest;
+    case 'POST':
+      return makeProtectedPostRequest;
     case 'UNPROTECTED_GET':
       return makeUnprotectedGetRequest;
     default:

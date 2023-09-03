@@ -7,6 +7,7 @@ import MemberList from './Page/MemberList/MemberList';
 import Login from './Page/Login/Login';
 import LoginRedirect from './Page/Login/LoginRedirect';
 import Forbidden from './Page/Login/Forbidden';
+import React from 'react';
 
 const router = createBrowserRouter([
   { path: "/", element: <Landing />},
@@ -23,12 +24,11 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-
+  <React.StrictMode>
     <RouterProvider router={router}></RouterProvider>
-
+  </React.StrictMode>
 );
-//   <React.StrictMode>
-//   </React.StrictMode>
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
